@@ -9,6 +9,7 @@ n = Network()
 win = pygame.display.set_mode((width,height))
 pygame.display.set_caption("Game")
 
+
 # Background
 BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "BG.jpg")), (width, height))
 BG_wait = pygame.transform.scale(pygame.image.load(os.path.join("assets", "gameBG.jpg")), (width, height))
@@ -23,12 +24,11 @@ class Player():
         self.y = y
         self.width = width
         self.height = height
-        self.rect = (x,y,width,height)
+        self.bird = (x,y,width,height)
         self.vel = 3
         self.ready = False 
         self.image = image
-        
-       
+           
         
     def draw(self,win):
         win.blit(self.image, (self.x, self.y))
@@ -41,7 +41,7 @@ class Player():
         
             
     def update(self):
-        self.rect = (self.x, self.y, self.width, self.height)
+        self.bird = (self.x, self.y, self.width, self.height)
         
     def get_width(self):
         return self.image.get_width()
@@ -71,8 +71,10 @@ def redrawWindow(win,player,player2):
     else:
         player.draw(win)
         player2.draw(win)
-        
     pygame.display.update()
+
+def countdown():
+    pass
     
 def main():
     run = True
@@ -81,9 +83,6 @@ def main():
     p2 = Player(0,0,100,100,bird2)
     p.ready = True
     clock = pygame.time.Clock()
-    print("Hellooo")
-    print(n.getP())
-   
 
     while run:
         clock.tick(60)
@@ -93,8 +92,17 @@ def main():
         p2.y = p2Pos[1]
         p2.update()
         
-        
-            
+        #มันยังรันไม่ออกตรงนี้แต่มันไม่แอเร่อ พยยจะทำเส้นชัยแต่ไม่ออกงับ
+        font = pygame.font.SysFont("comicsans", 60)
+        u_win = font.render("You win.", 1, (255,0,0))
+        u_lose = font.render("You lose", 1, (255,0,0))
+        if p.x + p.get_width() > width: 
+            win.blit(u_win, (100,200))            
+        elif p2.x + p2.get_width() > width:
+            win.blit(u_lose, (100,200))            
+        pygame.display.update()
+        pygame.time.delay(2000)
+          
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -103,20 +111,10 @@ def main():
                 mouse_presses = pygame.mouse.get_pressed()
                 if mouse_presses[0]:
                     p.move()
+
         redrawWindow(win ,p , p2)
         
-        #มันยังรันไม่ออกตรงนี้แต่มันไม่แอเร่อ พยยจะทำเส้นชัยแต่ไม่ออกงับ
-        if p.x + p.get_width() > width: 
-            font = pygame.font.SysFont("comicsans", 60)
-            u_win = font.render("You're Winner.", 1, (255,0,0))
-            win.blit(u_win, (100,200))
-        elif p2.x + p2.get_width() > width:
-            font = pygame.font.SysFont("comicsans", 60)
-            u_win1 = font.render("You're Winner.", 1, (255,0,0))
-            win.blit(u_win1, (100,200))    
-        
-
-
+  
 def menu():
     run = True
     clock = pygame.time.Clock()

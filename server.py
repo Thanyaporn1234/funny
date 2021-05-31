@@ -2,10 +2,10 @@
 import socket
 import threading
 
-server = "192.168.0.113"
+server = "192.168.0.104"
 port = 1612
 idcount = 0
-pos = [(0,0),(100,100)]
+pos = [(0,200),(0,300)]
 readystat = [False,False]
 
 
